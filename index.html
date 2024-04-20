@@ -24,9 +24,10 @@
       const search = document.getElementById("search")
       const statusText = document.getElementById("statusText")
 
-      document.getElementById(
-        "myNameIs"
-      ).textContent = `My name is: ${window.localStorage.getItem("name")}`
+      const name = window.localStorage.getItem("name")
+      if (name) {
+        document.getElementById("myNameIs").textContent = `My name is: ${name}`
+      }
 
       const deleteButtons = document.querySelectorAll("#deleteButton")
 
