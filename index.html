@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Feed Page</title>
+
+    <!-- tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- daisyui -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <script type="module">
+      import { getAllPostsByName } from "./js/blog/getAllPosts.mjs"
+      import { deletePostById } from "./js/blog/deletePost.mjs"
+      import { debounce } from "./js/utils.mjs"
+
+      const feed = document.getElementById("feed")
+      const search = document.getElementById("search")
+      const statusText = document.getElementById("statusText")
+
+      document.getElementById(
+        "myNameIs"
+      ).textContent = `My name is: ${window.localStorage.getItem("name")}`
+
+      const deleteButtons = document.querySelectorAll("#deleteButton")
+
+      async function handleInput() {
+        const author = search.value
+
+        if (author === "") {
+          feed.innerHTML = ""
+          statusText.textContent = ""
+          return
+        }
+
+        statusText.textContent = `Fetching posts for ${search.value}...`
+
+        const posts = await getAllPostsByName(author)
+
+        if (posts.length === 0) {
+          feed.innerHTML = ""
+          statusText.textContent = `No posts found for ${author}`
+          return
+        }
+
+        feed.innerHTML = posts
+          .map(
+            (post) => `
+            <article class="card border border-accent">
+              <div class="card-body">
+                <h2 class="card-title line-clamp-1">
+                  ${post.title}
+                </h2>
+                <p class="line-clamp-3">${post.body}</p>
+                ${
+                  post.author.name === window.localStorage.getItem("name")
+                    ? `
+                    <div class="card-actions justify-end">
+                      <a class="btn btn-sm btn-primary" href="/post/edit.html?id=${post.id}">Edit</a>
+                      <button class="btn btn-sm btn-error" id="deleteButton" data-post-id="${post.id}">Delete</button>
+                    </div>
+                  `
+                    : ""
+                }
+              </div>
+            </article>
+          `
+          )
+          .join("")
+
+        statusText.textContent = `Fetched ${posts.length} posts for ${author}`
+
+        const deleteButtons = document.querySelectorAll("#deleteButton")
+
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", async () => {
+            const postId = button.getAttribute("data-post-id")
+            try {
+              await deletePostById(postId)
+              alert("Post deleted successfully")
+              window.location.reload()
+            } catch (error) {
+              console.error(error)
+            }
+          })
+        })
+      }
+
+      const debouncedHandleInput = debounce(handleInput, 500)
+
+      search.addEventListener("input", debouncedHandleInput)
+    </script>
+  </head>
+  <body>
+    <div class="container mx-auto">
+      <h1 class="text-7xl font-bold">Blog Feed Page</h1>
+      <nav class="navbar">
+        <a class="btn btn-ghost btn-sm btn-active" href="index.html"
+          >Blog Feed</a
+        >
+        <a class="btn btn-ghost btn-sm" href="/post/index.html">Create Blog</a>
+        <a class="btn btn-ghost btn-sm" href="/post/edit.html">Edit Blog</a>
+        <a class="btn btn-ghost btn-sm" href="/account/register.html"
+          >Register</a
+        >
+        <a class="btn btn-ghost btn-sm" href="/account/login.html">Login</a>
+      </nav>
+      <div>
+        <div class="flex items-end gap-2">
+          <input
+            type="text"
+            id="search"
+            name="search"
+            placeholder="Search by author name"
+            class="input input-bordered"
+          />
+          <div class="flex flex-col">
+            <p class="text-sm text-secondary" id="myNameIs"></p>
+            <p class="text-sm text-accent" id="statusText"></p>
+          </div>
+        </div>
+        <section class="grid grid-cols-1 gap-4 mt-4" id="feed"></section>
+      </div>
+    </div>
+  </body>
+</html>

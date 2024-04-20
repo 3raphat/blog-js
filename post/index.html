@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Post</title>
+
+    <!-- tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- daisyui -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+  <script src="../js/blog/createPost.js" defer></script>
+  <body>
+    <div class="container mx-auto">
+      <h1 class="text-7xl font-bold">Create Post</h1>
+      <nav class="navbar">
+        <a class="btn btn-ghost btn-sm" href="../index.html">Blog Feed</a>
+        <a class="btn btn-ghost btn-sm btn-active" href="/post/index.html"
+          >Create Blog</a
+        >
+        <a class="btn btn-ghost btn-sm" href="/post/edit.html">Edit Blog</a>
+        <a class="btn btn-ghost btn-sm" href="/account/register.html"
+          >Register</a
+        >
+        <a class="btn btn-ghost btn-sm" href="/account/login.html">Login</a>
+      </nav>
+      <div>
+        <form id="createPostForm" class="flex flex-col gap-4">
+          <div class="flex flex-col">
+            <label for="title" class="label">Title</label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Enter your title"
+              class="input input-bordered"
+              required
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="content" class="label">Content</label>
+            <textarea
+              id="content"
+              name="content"
+              placeholder="Enter your content"
+              class="textarea textarea-bordered"
+            ></textarea>
+          </div>
+          <button type="submit" class="btn" id="createPostButton">
+            Create Post
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
