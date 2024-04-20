@@ -1,3 +1,13 @@
+window.addEventListener("load", async () => {
+  if (
+    !window.localStorage.getItem("name") &&
+    !window.localStorage.getItem("accessToken")
+  ) {
+    alert("Please login first")
+    window.location.href = "/account/login.html"
+  }
+})
+
 document
   .getElementById("createPostForm")
   .addEventListener("submit", async (e) => {

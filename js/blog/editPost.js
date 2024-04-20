@@ -21,9 +21,11 @@ window.addEventListener("load", async () => {
     alert(
       "Login แล้วไป Search ชื่อตัวเองในหน้า Blog Feed ก่อน แล้วค่อยกดปุ่ม Edit"
     )
-    window.location.href = window.localStorage.getItem("name")
-      ? "/index.html"
-      : "/account/login.html"
+    window.location.href =
+      window.localStorage.getItem("name") &&
+      window.localStorage.getItem("accessToken")
+        ? "/index.html"
+        : "/account/login.html"
     return
   }
 
