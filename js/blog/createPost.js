@@ -9,14 +9,14 @@ window.addEventListener("load", async () => {
 })
 
 document
-  .getElementById("createPostForm")
+  .getElementById("create-post-form")
   .addEventListener("submit", async (e) => {
     e.preventDefault()
 
     const title = document.getElementById("title").value
     const content = document.getElementById("content").value
 
-    const createPostButton = document.getElementById("createPostButton")
+    const createPostButton = document.getElementById("create-post-button")
 
     try {
       createPostButton.disabled = true

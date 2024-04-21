@@ -35,14 +35,14 @@ window.addEventListener("load", async () => {
   })
 
   document
-    .getElementById("editPostForm")
+    .getElementById("edit-post-form")
     .addEventListener("submit", async (e) => {
       e.preventDefault()
 
       const title = document.getElementById("title").value
       const content = document.getElementById("content").value
 
-      const editPostButton = document.getElementById("editPostButton")
+      const editPostButton = document.getElementById("edit-post-button")
 
       try {
         editPostButton.disabled = true

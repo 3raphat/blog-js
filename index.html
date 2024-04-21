@@ -22,14 +22,14 @@
 
       const feed = document.getElementById("feed")
       const search = document.getElementById("search")
-      const statusText = document.getElementById("statusText")
+      const statusText = document.getElementById("status-text")
 
       const name = window.localStorage.getItem("name")
       if (name) {
-        document.getElementById("myNameIs").textContent = `My name is: ${name}`
+        document.getElementById(
+          "show-my-name"
+        ).textContent = `My name is: ${name}`
       }
-
-      const deleteButtons = document.querySelectorAll("#deleteButton")
 
       async function handleInput() {
         const author = search.value
@@ -64,7 +64,7 @@
                     ? `
                     <div class="card-actions justify-end">
                       <a class="btn btn-sm btn-primary" href="/post/edit.html?id=${post.id}">Edit</a>
-                      <button class="btn btn-sm btn-error" id="deleteButton" data-post-id="${post.id}">Delete</button>
+                      <button class="btn btn-sm btn-error" id="delete-button" data-post-id="${post.id}">Delete</button>
                     </div>
                   `
                     : ""
@@ -77,7 +77,7 @@
 
         statusText.textContent = `Fetched ${posts.length} posts for ${author}`
 
-        const deleteButtons = document.querySelectorAll("#deleteButton")
+        const deleteButtons = document.querySelectorAll("#delete-button")
 
         deleteButtons.forEach((button) => {
           button.addEventListener("click", async () => {
@@ -122,8 +122,8 @@
             class="input input-bordered"
           />
           <div class="flex flex-col">
-            <p class="text-sm text-secondary" id="myNameIs"></p>
-            <p class="text-sm text-accent" id="statusText"></p>
+            <p class="text-sm text-secondary" id="show-my-name"></p>
+            <p class="text-sm text-accent" id="status-text"></p>
           </div>
         </div>
         <section class="grid grid-cols-1 gap-4 mt-4" id="feed"></section>
