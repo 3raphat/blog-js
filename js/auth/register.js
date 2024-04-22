@@ -21,9 +21,10 @@ document
       if (data.errors) {
         alert(data.errors.map((error) => error.message).join(", "))
         console.error(data.errors.map((error) => error.message).join(", "))
+        return
       }
 
-      if (data.data) {
+      if (response.ok) {
         alert("Registered successfully!")
         window.location.href = "/account/login.html"
       }
