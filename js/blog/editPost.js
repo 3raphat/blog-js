@@ -7,7 +7,7 @@ async function getPost(id) {
     )
     const post = await response.json()
 
-    return post
+    return post.data
   } catch (error) {
     console.error(error)
   }
@@ -30,8 +30,8 @@ window.addEventListener("load", async () => {
   }
 
   await getPost(id).then((post) => {
-    document.getElementById("title").value = post.data.title
-    document.getElementById("content").value = post.data.body
+    document.getElementById("title").value = post.title
+    document.getElementById("content").value = post.body
   })
 
   document
