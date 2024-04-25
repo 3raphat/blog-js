@@ -32,6 +32,7 @@ window.addEventListener("load", async () => {
   await getPost(id).then((post) => {
     document.getElementById("title").value = post.title
     document.getElementById("content").value = post.body
+    document.getElementById("image-url").value = post.media.url
   })
 
   document
@@ -41,12 +42,25 @@ window.addEventListener("load", async () => {
 
       const title = document.getElementById("title").value
       const content = document.getElementById("content").value
+      const imageURL = document.getElementById("image-url").value
 
       const editPostButton = document.getElementById("edit-post-button")
 
       try {
         editPostButton.disabled = true
-        editPostButton.innerHTML = "Editing post..."
+        editPostButton.innerHTML = `<span class="loading loading-spinner"></span> Editing post...`
+
+        const payload = {
+          title,
+          body: content,
+          media: {
+            url: imageURL,
+          },
+        }
+
+        if (!imageURL) {
+          delete payload.media
+        }
 
         const response = await fetch(
           `https://v2.api.noroff.dev/blog/posts/${localStorage.getItem(
@@ -54,10 +68,7 @@ window.addEventListener("load", async () => {
           )}/${id}`,
           {
             method: "PUT",
-            body: JSON.stringify({
-              title,
-              body: content,
-            }),
+            body: JSON.stringify(payload),
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

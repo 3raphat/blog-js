@@ -14,9 +14,9 @@
       rel="stylesheet"
       type="text/css"
     />
-  </head>
 
-  <script src="../js/blog/createPost.js" defer></script>
+    <script src="../js/blog/createPost.js" defer></script>
+  </head>
   <body>
     <div class="container mx-auto">
       <h1 class="text-7xl font-bold">Create Post</h1>
@@ -33,27 +33,32 @@
       </nav>
       <div>
         <form id="create-post-form" class="flex flex-col gap-4">
-          <div class="flex flex-col">
-            <label for="title" class="label">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Enter your title"
-              class="input input-bordered"
-              required
-            />
+          <div class="flex gap-4">
+            <label class="input input-bordered flex items-center gap-2 w-1/2">
+              <span class="font-semibold">Title</span>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="grow"
+                required
+              />
+              <span class="badge badge-error">Required</span>
+            </label>
+            <label class="input input-bordered flex items-center gap-2 w-1/2">
+              <span class="font-semibold">Image URL</span>
+              <input type="url" id="image-url" name="image-url" class="grow" />
+            </label>
           </div>
-          <div class="flex flex-col">
-            <label for="content" class="label">Content</label>
-            <textarea
-              id="content"
-              name="content"
-              placeholder="Enter your content"
-              class="textarea textarea-bordered"
-            ></textarea>
-          </div>
-          <button type="submit" class="btn" id="create-post-button">
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Write your blog post here..."
+            rows="8"
+            maxlength="2000"
+            class="textarea textarea-bordered"
+          ></textarea>
+          <button type="submit" class="btn btn-success" id="create-post-button">
             Create Post
           </button>
         </form>

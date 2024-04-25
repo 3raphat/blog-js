@@ -14,9 +14,9 @@
       rel="stylesheet"
       type="text/css"
     />
-  </head>
 
-  <script src="../js/blog/editPost.js" defer></script>
+    <script src="../js/blog/editPost.js" defer></script>
+  </head>
   <body>
     <div class="container mx-auto">
       <h1 class="text-7xl font-bold">Edit Post</h1>
@@ -33,27 +33,31 @@
       </nav>
       <div>
         <form id="edit-post-form" class="flex flex-col gap-4">
-          <div class="flex flex-col">
-            <label for="title" class="label">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Edit your title"
-              class="input input-bordered"
-              required
-            />
+          <div class="flex gap-4">
+            <label class="input input-bordered flex items-center gap-2 w-1/2">
+              <span class="font-semibold">Title</span>
+              <input
+                type="text"
+                class="grow"
+                id="title"
+                name="title"
+                required
+              />
+            </label>
+            <label class="input input-bordered flex items-center gap-2 w-1/2">
+              <span class="font-semibold"> Image URL </span>
+              <input type="url" class="grow" id="image-url" name="image-url" />
+            </label>
           </div>
-          <div class="flex flex-col">
-            <label for="content" class="label">Content</label>
-            <textarea
-              id="content"
-              name="content"
-              placeholder="Edit your content"
-              class="textarea textarea-bordered"
-            ></textarea>
-          </div>
-          <button type="submit" class="btn" id="edit-post-button">
+          <textarea
+            id="content"
+            name="content"
+            placeholder="Edit your blog post here..."
+            rows="8"
+            maxlength="2000"
+            class="textarea textarea-bordered"
+          ></textarea>
+          <button type="submit" class="btn btn-success" id="edit-post-button">
             Edit Post
           </button>
         </form>
