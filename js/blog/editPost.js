@@ -32,7 +32,8 @@ window.addEventListener("load", async () => {
   await getPost(id).then((post) => {
     document.getElementById("title").value = post.title
     document.getElementById("content").value = post.body
-    document.getElementById("image-url").value = post.media.url
+    document.getElementById("image-url").value = post.media?.url || ""
+    document.getElementById("tags").value = post.tags.join(", ")
   })
 
   document
@@ -43,6 +44,11 @@ window.addEventListener("load", async () => {
       const title = document.getElementById("title").value
       const content = document.getElementById("content").value
       const imageURL = document.getElementById("image-url").value
+      const tags = document
+        .getElementById("tags")
+        .value.split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== "")
 
       const editPostButton = document.getElementById("edit-post-button")
 
@@ -53,6 +59,7 @@ window.addEventListener("load", async () => {
         const payload = {
           title,
           body: content,
+          tags,
           media: {
             url: imageURL,
           },
@@ -78,10 +85,13 @@ window.addEventListener("load", async () => {
         const json = await response.json()
         console.log(json)
 
-        if (response.ok) {
-          alert("Post edited successfully!")
-          window.location.href = "/index.html"
+        if (!response.ok) {
+          alert(json.errors.map((error) => error.message).join(", "))
+          return
         }
+
+        alert("Post edited successfully!")
+        window.location.href = "/index.html"
       } catch (error) {
         console.error(error)
       } finally {

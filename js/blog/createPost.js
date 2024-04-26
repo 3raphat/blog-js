@@ -16,6 +16,11 @@ document
     const title = document.getElementById("title").value
     const content = document.getElementById("content").value
     const imageURL = document.getElementById("image-url").value
+    const tags = document
+      .getElementById("tags")
+      .value.split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "")
 
     const createPostButton = document.getElementById("create-post-button")
 
@@ -26,6 +31,7 @@ document
       const payload = {
         title,
         body: content,
+        tags,
         media: {
           url: imageURL,
         },
@@ -49,9 +55,12 @@ document
       const json = await response.json()
       console.log(json)
 
-      if (response.ok) {
-        alert("Post created successfully!")
+      if (!response.ok) {
+        alert(json.errors.map((error) => error.message).join(", "))
+        return
       }
+
+      alert("Post created successfully!")
     } catch (error) {
       console.error(error)
     } finally {
