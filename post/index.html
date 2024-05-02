@@ -29,6 +29,8 @@
         const post = await getPostById(authorName, postId)
         const shareUrl = `${window.location.origin}/post/index.html?id=${postId}&author=${authorName}`
 
+        document.title = `${post.title} | ${post.author.name}`
+
         document.getElementById("create-section").classList.add("hidden")
         document.getElementById("read-section").innerHTML = `
           <div class="my-16 w-full">
