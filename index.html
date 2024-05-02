@@ -16,7 +16,7 @@
     />
 
     <script type="module">
-      import { getAllPostsByName } from "./js/blog/getAllPosts.mjs"
+      import { getAllPostsByName } from "./js/blog/getPost.mjs"
       import { deletePostById } from "./js/blog/deletePost.mjs"
       import { debounce, formatDistanceToNow } from "./js/utils.mjs"
 
@@ -68,10 +68,14 @@
                       }
                     </span>
                   </div>
-                  <h2 class="card-title line-clamp-1">
-                    ${post.title}
-                  </h2>
-                  <p class="line-clamp-3">${post.body}</p>
+                    <a href="/post/index.html?id=${post.id}&author=${
+              post.author.name
+            }">
+                    <h2 class="card-title line-clamp-1">
+                      ${post.title}
+                      </h2>
+                    <p class="line-clamp-3">${post.body}</p>
+                  </a>
                   ${
                     post.author.name === window.localStorage.getItem("name")
                       ? `

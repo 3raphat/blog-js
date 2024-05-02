@@ -45,4 +45,8 @@ function formatDistanceToNow(date) {
   })
 }
 
-export { debounce, formatDistanceToNow }
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+}
+
+export { debounce, formatDistanceToNow, copyToClipboard }

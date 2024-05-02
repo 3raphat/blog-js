@@ -16,9 +16,107 @@
     />
 
     <script src="../js/blog/createPost.js" defer></script>
+
+    <script type="module" defer>
+      import { getPostById } from "../js/blog/getPost.mjs"
+      import { formatDistanceToNow, copyToClipboard } from "../js/utils.mjs"
+
+      const params = new URLSearchParams(window.location.search)
+      const postId = params.get("id")
+      const authorName = params.get("author")
+
+      if (postId && authorName) {
+        const post = await getPostById(authorName, postId)
+        const shareUrl = `${window.location.origin}/post/index.html?id=${postId}&author=${authorName}`
+
+        document.getElementById("create-section").classList.add("hidden")
+        document.getElementById("read-section").innerHTML = `
+          <div class="my-16 w-full">
+            <div>
+              <h1 class="text-6xl font-bold break-words leading-tight">${
+                post.title
+              }</h1>
+              <div class="flex items-center justify-between my-8">
+                <div class="flex items-center">
+                  <img src=${
+                    post.author.avatar.url
+                  } class="mr-4 rounded-full size-11" />
+                  <div class="flex flex-col gap-1">
+                    <span class="text-lg">${post.author.name}</span>
+                    <div class="flex gap-2 items-center">
+                      ${
+                        post.tags.length === 0
+                          ? ""
+                          : `
+                            <div class="flex gap-1 justify-start">
+                              ${post.tags
+                                .map(
+                                  (tag) =>
+                                    `<span class="badge badge-neutral">${tag}</span>`
+                                )
+                                .join("")}
+                            </div>
+                            ·
+                            `
+                      }
+                      <span class="text-accent text-sm">
+                       ${
+                         new Date(post.created) < new Date(post.updated)
+                           ? `Updated ${formatDistanceToNow(post.updated)}`
+                           : formatDistanceToNow(post.created)
+                       }
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-circle btn-ghost" id="share-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="w-5 h-5">
+                    <path d="M20.3927 8.03168L18.6457 6.51461C17.3871 5.42153 16.8937 4.83352 16.2121 5.04139C15.3622 5.30059 15.642 6.93609 15.642 7.48824C14.3206 7.48824 12.9468 7.38661 11.6443 7.59836C7.34453 8.29742 6 11.3566 6 14.6525C7.21697 13.9065 8.43274 13.0746 9.8954 12.7289C11.7212 12.2973 13.7603 12.5032 15.642 12.5032C15.642 13.0554 15.3622 14.6909 16.2121 14.9501C16.9844 15.1856 17.3871 14.5699 18.6457 13.4769L20.3927 11.9598C21.4642 11.0293 22 10.564 22 9.99574C22 9.4275 21.4642 8.96223 20.3927 8.03168Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M10.5676 3C6.70735 3.00694 4.68594 3.10152 3.39411 4.39073C2 5.78202 2 8.02125 2 12.4997C2 16.9782 2 19.2174 3.3941 20.6087C4.78821 22 7.03198 22 11.5195 22C16.0071 22 18.2509 22 19.645 20.6087C20.6156 19.64 20.9104 18.2603 21 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="h-[480px] mb-10">
+              <img src="${
+                post.media?.url
+                  ? post.media.url
+                  : "https://images.unsplash.com/photo-1714547509056-8873c83d03b0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // default image
+              }" class="object-cover w-full h-full" />
+            </div>
+            <p class="text-xl" style="white-space: pre-wrap;">${
+              post.body || "No content"
+            }</p>
+          </div>
+        `
+
+        const shareButton = document.getElementById("share-btn")
+        shareButton.onclick = () => {
+          copyToClipboard(shareUrl)
+
+          shareButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-5 h-5" viewBox="0 0 16 16">
+              <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
+              <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708"/>
+            </svg>
+          `
+          setTimeout(() => {
+            shareButton.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="currentColor" fill="none" class="w-5 h-5">
+                <path d="M20.3927 8.03168L18.6457 6.51461C17.3871 5.42153 16.8937 4.83352 16.2121 5.04139C15.3622 5.30059 15.642 6.93609 15.642 7.48824C14.3206 7.48824 12.9468 7.38661 11.6443 7.59836C7.34453 8.29742 6 11.3566 6 14.6525C7.21697 13.9065 8.43274 13.0746 9.8954 12.7289C11.7212 12.2973 13.7603 12.5032 15.642 12.5032C15.642 13.0554 15.3622 14.6909 16.2121 14.9501C16.9844 15.1856 17.3871 14.5699 18.6457 13.4769L20.3927 11.9598C21.4642 11.0293 22 10.564 22 9.99574C22 9.4275 21.4642 8.96223 20.3927 8.03168Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M10.5676 3C6.70735 3.00694 4.68594 3.10152 3.39411 4.39073C2 5.78202 2 8.02125 2 12.4997C2 16.9782 2 19.2174 3.3941 20.6087C4.78821 22 7.03198 22 11.5195 22C16.0071 22 18.2509 22 19.645 20.6087C20.6156 19.64 20.9104 18.2603 21 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            `
+          }, 2000)
+        }
+      } else {
+        document.getElementById("create-section").classList.remove("hidden")
+        document.getElementById("read-section").classList.add("hidden")
+      }
+    </script>
   </head>
   <body>
-    <div class="container mx-auto">
+    <div class="container mx-auto" id="create-section">
       <h1 class="text-7xl font-bold">Create Post</h1>
       <nav class="navbar">
         <a class="btn btn-ghost btn-sm" href="../index.html">Blog Feed</a>
@@ -74,5 +172,6 @@
         </form>
       </div>
     </div>
+    <div class="container max-w-7xl mx-auto px-8" id="read-section"></div>
   </body>
 </html>
