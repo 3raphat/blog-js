@@ -18,7 +18,7 @@
     <script type="module">
       import { getAllPostsByName } from "./js/blog/getAllPosts.mjs"
       import { deletePostById } from "./js/blog/deletePost.mjs"
-      import { debounce } from "./js/utils.mjs"
+      import { debounce, formatDistanceToNow } from "./js/utils.mjs"
 
       const feed = document.getElementById("feed")
       const search = document.getElementById("search")
@@ -53,8 +53,21 @@
         feed.innerHTML = posts
           .map(
             (post) => `
-              <article class="card card-side border border-neutral">        
+              <article class="card card-side border border-neutral">
                 <div class="card-body p-6">
+                  <div class="flex items-center">
+                    <img src=${
+                      post.author.avatar.url
+                    } class="mr-2 rounded-full size-6" />
+                    ${post.author.name}
+                    <span class="text-accent">
+                      &nbsp;· ${
+                        new Date(post.created) < new Date(post.updated)
+                          ? `Updated ${formatDistanceToNow(post.updated)}`
+                          : formatDistanceToNow(post.created)
+                      }
+                    </span>
+                  </div>
                   <h2 class="card-title line-clamp-1">
                     ${post.title}
                   </h2>
