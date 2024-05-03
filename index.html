@@ -160,7 +160,11 @@
                 </div>
                 ${
                   post.media?.url
-                    ? `<figure class="max-w-[196px] min-w-[196px]"><img src=${post.media.url} class="aspect-square"/></figure>`
+                    ? `
+                        <figure class="max-w-[196px] min-w-[196px] aspect-square">
+                          <img src=${post.media.url} class="object-cover w-full h-full" />
+                        </figure>
+                      `
                     : ""
                 }
               </article>
