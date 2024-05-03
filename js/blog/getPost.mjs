@@ -1,6 +1,8 @@
-export async function getAllPostsByName(name) {
+export async function getAllPostsByName(name, tag) {
   try {
-    const response = await fetch(`https://v2.api.noroff.dev/blog/posts/${name}`)
+    const response = await fetch(
+      `https://v2.api.noroff.dev/blog/posts/${name}${tag ? `?_tag=${tag}` : ""}`
+    )
     const posts = await response.json()
 
     return posts.data
