@@ -5,8 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Post</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- tailwindcss -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Source Sans 3", "sans-serif"],
+              serif: ["Lora", "serif"],
+            },
+          },
+        },
+      }
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply font-sans;
+        }
+      }
+    </style>
 
     <!-- daisyui -->
     <link
@@ -86,7 +112,7 @@
                   : "https://images.unsplash.com/photo-1714547509056-8873c83d03b0?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // default image
               }" class="object-cover w-full h-full" />
             </div>
-            <p class="text-xl" style="white-space: pre-wrap;">${
+            <p class="text-xl leading-relaxed font-serif" style="white-space: pre-wrap;">${
               post.body || "No content"
             }</p>
           </div>
